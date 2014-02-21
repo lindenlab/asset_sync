@@ -4,6 +4,10 @@ namespace :assets do
   task :sync => :environment do
     AssetSync.sync
   end
+  desc 'Push assets to remote (DOES NOT SYNC OR REMOVE ANY FILES, just uploads the assets)'
+  task :push => :environment do
+    AssetSync.push
+  end
   namespace :sync do
     desc 'Delete out-of-sync files on remote'
     task :clean => :environment do

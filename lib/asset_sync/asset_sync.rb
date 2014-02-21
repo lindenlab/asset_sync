@@ -30,6 +30,12 @@ module AssetSync
       end
     end
 
+    def push
+      with_config do
+        self.storage.push
+      end
+    end
+
     def clean
       with_config do
         self.storage.delete_extra_remote_files

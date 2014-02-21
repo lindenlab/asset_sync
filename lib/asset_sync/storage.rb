@@ -227,11 +227,27 @@ module AssetSync
       end
     end
 
+    def push_files
+      local_files_to_upload = local_files - ignored_files + always_upload_files
+      local_files_to_upload = (local_files_to_upload + get_non_fingerprinted(local_files_to_upload)).uniq
+
+      local_files_to_upload.each do |f|
+        next unless File.file? "#{path}/#{f}" # Only files.
+        upload_file f
+      end
+    end
+
     def sync
       # fixes: https://github.com/rumblelabs/asset_sync/issues/19
       log "AssetSync: Syncing."
       upload_files
       delete_extra_remote_files unless keep_existing_remote_files?
+      log "AssetSync: Done."
+    end
+
+    def push
+      log "AssetSync: Pushing."
+      push_files
       log "AssetSync: Done."
     end
 
